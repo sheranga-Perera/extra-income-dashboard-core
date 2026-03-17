@@ -1,0 +1,122 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: you
+      changes:
+        - createTable:
+            tableName: admin_users
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: you
+      changes:
+        - createTable:
+            tableName: ad_requests
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: companyName
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: contactPerson
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: contactEmail
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: contactPhone
+                  type: VARCHAR(50)
+              - column:
+                  name: adTitle
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: adDescription
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: adType
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: adGoal
+                  type: TEXT
+              - column:
+                  name: mediaUrl
+                  type: TEXT
+              - column:
+                  name: mediaContent
+                  type: TEXT
+              - column:
+                  name: mediaNotes
+                  type: TEXT
+              - column:
+                  name: cta
+                  type: VARCHAR(255)
+              - column:
+                  name: viewsPerDay
+                  type: INT
+              - column:
+                  name: minutesPerDay
+                  type: INT
+              - column:
+                  name: startDate
+                  type: DATE
+              - column:
+                  name: endDate
+                  type: DATE
+              - column:
+                  name: status
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: createdAt
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updatedAt
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: approvedAt
+                  type: TIMESTAMP
+              - column:
+                  name: rejectedAt
+                  type: TIMESTAMP

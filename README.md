@@ -1,2 +1,2 @@
-# extra-income-dashboard-core
-Admin dashboard backend- for extra-income v1.0
+# extra-income-user-service
+This micro-service handles user related operations for extra-income 
