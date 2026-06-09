@@ -4,6 +4,7 @@ import com.phx.ei.ads.dto.ActiveAdResponse;
 import com.phx.ei.ads.dto.AdApprovalRequest;
 import com.phx.ei.ads.dto.AdRequestCreate;
 import com.phx.ei.ads.dto.AdRequestResponse;
+import com.phx.ei.ads.dto.AdSummaryResponse;
 import com.phx.ei.ads.entity.AdRequest;
 import com.phx.ei.ads.entity.AdStatus;
 import com.phx.ei.ads.repository.AdRequestRepository;
@@ -125,6 +126,18 @@ public class AdController {
                 .map(this::toActiveResponse)
                 .toList();
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<AdSummaryResponse> getSummary() {
+        requireAdmin();
+        LocalDate today = LocalDate.now();
+        return ResponseEntity.ok(new AdSummaryResponse(
+                adRequestRepository.countByStatus(AdStatus.PENDING),
+                adRequestRepository.countByStatus(AdStatus.APPROVED),
+                adRequestRepository.countByStatus(AdStatus.REJECTED),
+                adRequestRepository.findActiveAds(AdStatus.APPROVED, today).size()
+        ));
     }
 
     private void validateRequest(AdRequestCreate request) {

@@ -13,6 +13,8 @@ import java.util.UUID;
 public interface AdRequestRepository extends JpaRepository<AdRequest, UUID> {
     List<AdRequest> findByStatusOrderByCreatedAtDesc(AdStatus status);
 
+    long countByStatus(AdStatus status);
+
     @Query("""
             SELECT a FROM AdRequest a
             WHERE a.status = :status

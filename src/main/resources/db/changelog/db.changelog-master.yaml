@@ -120,3 +120,31 @@ databaseChangeLog:
               - column:
                   name: rejectedAt
                   type: TIMESTAMP
+  - changeSet:
+      id: 3
+      author: you
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: dashboard_settings
+      changes:
+        - createTable:
+            tableName: dashboard_settings
+            columns:
+              - column:
+                  name: setting_key
+                  type: VARCHAR(120)
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: setting_value
+                  type: TEXT
+              - column:
+                  name: description
+                  type: TEXT
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
