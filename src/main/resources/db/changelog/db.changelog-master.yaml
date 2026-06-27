@@ -1,7 +1,12 @@
 databaseChangeLog:
   - changeSet:
-      id: 1
-      author: you
+      id: dashboard-001-create-admin-users
+      author: phx
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: admin_users
       changes:
         - createTable:
             tableName: admin_users
@@ -27,9 +32,15 @@ databaseChangeLog:
                   type: VARCHAR(50)
                   constraints:
                     nullable: false
+
   - changeSet:
-      id: 2
-      author: you
+      id: dashboard-002-create-ad-requests
+      author: phx
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: ad_requests
       changes:
         - createTable:
             tableName: ad_requests
@@ -40,64 +51,64 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
               - column:
-                  name: companyName
+                  name: company_name
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
-                  name: contactPerson
+                  name: contact_person
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
-                  name: contactEmail
+                  name: contact_email
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
-                  name: contactPhone
-                  type: VARCHAR(50)
+                  name: contact_phone
+                  type: VARCHAR(255)
               - column:
-                  name: adTitle
+                  name: ad_title
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
-                  name: adDescription
-                  type: TEXT
+                  name: ad_description
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
-                  name: adType
-                  type: VARCHAR(50)
+                  name: ad_type
+                  type: VARCHAR(255)
                   constraints:
                     nullable: false
               - column:
-                  name: adGoal
+                  name: ad_goal
+                  type: VARCHAR(255)
+              - column:
+                  name: media_url
                   type: TEXT
               - column:
-                  name: mediaUrl
+                  name: media_content
                   type: TEXT
               - column:
-                  name: mediaContent
-                  type: TEXT
-              - column:
-                  name: mediaNotes
+                  name: media_notes
                   type: TEXT
               - column:
                   name: cta
                   type: VARCHAR(255)
               - column:
-                  name: viewsPerDay
+                  name: views_per_day
                   type: INT
               - column:
-                  name: minutesPerDay
+                  name: minutes_per_day
                   type: INT
               - column:
-                  name: startDate
+                  name: start_date
                   type: DATE
               - column:
-                  name: endDate
+                  name: end_date
                   type: DATE
               - column:
                   name: status
@@ -105,24 +116,25 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: createdAt
+                  name: created_at
                   type: TIMESTAMP
                   constraints:
                     nullable: false
               - column:
-                  name: updatedAt
+                  name: updated_at
                   type: TIMESTAMP
                   constraints:
                     nullable: false
               - column:
-                  name: approvedAt
+                  name: approved_at
                   type: TIMESTAMP
               - column:
-                  name: rejectedAt
+                  name: rejected_at
                   type: TIMESTAMP
+
   - changeSet:
-      id: 3
-      author: you
+      id: dashboard-003-create-dashboard-settings
+      author: phx
       preConditions:
         onFail: MARK_RAN
         not:
