@@ -160,3 +160,66 @@ databaseChangeLog:
                   type: TIMESTAMP
                   constraints:
                     nullable: false
+
+  - changeSet:
+      id: dashboard-004-add-admin-users-deleted
+      author: phx
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          columnExists:
+            tableName: admin_users
+            columnName: deleted
+      changes:
+        - addColumn:
+            tableName: admin_users
+            columns:
+              - column:
+                  name: deleted
+                  type: INT
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+        - sql: ALTER TABLE admin_users ADD CONSTRAINT admin_users_deleted_check CHECK (deleted IN (0, 1))
+
+  - changeSet:
+      id: dashboard-005-add-ad-requests-deleted
+      author: phx
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          columnExists:
+            tableName: ad_requests
+            columnName: deleted
+      changes:
+        - addColumn:
+            tableName: ad_requests
+            columns:
+              - column:
+                  name: deleted
+                  type: INT
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+        - sql: ALTER TABLE ad_requests ADD CONSTRAINT ad_requests_deleted_check CHECK (deleted IN (0, 1))
+
+  - changeSet:
+      id: dashboard-006-add-dashboard-settings-deleted
+      author: phx
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          columnExists:
+            tableName: dashboard_settings
+            columnName: deleted
+      changes:
+        - addColumn:
+            tableName: dashboard_settings
+            columns:
+              - column:
+                  name: deleted
+                  type: INT
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+        - sql: ALTER TABLE dashboard_settings ADD CONSTRAINT dashboard_settings_deleted_check CHECK (deleted IN (0, 1))

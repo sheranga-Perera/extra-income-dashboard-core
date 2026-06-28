@@ -10,11 +10,15 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "admin_users")
+@SQLDelete(sql = "UPDATE admin_users SET deleted = 1 WHERE id = ?")
+@SQLRestriction("deleted = 0")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,4 +36,15 @@ public class AdminUser {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @Column(nullable = false)
+    private Integer deleted = 0;
+
+    public AdminUser(UUID id, String username, String password, Role role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.deleted = 0;
+    }
 }
