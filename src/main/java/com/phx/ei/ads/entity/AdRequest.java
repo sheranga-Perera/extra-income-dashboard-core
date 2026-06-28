@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "ad_requests")
+@SQLDelete(sql = "UPDATE ad_requests SET deleted = 1 WHERE id = ?")
+@SQLRestriction("deleted = 0")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -74,6 +78,9 @@ public class AdRequest {
 
     private LocalDateTime rejectedAt;
 
+    @Column(nullable = false)
+    private Integer deleted = 0;
+
     @PrePersist
     public void onCreate() {
         LocalDateTime now = LocalDateTime.now();
@@ -81,6 +88,9 @@ public class AdRequest {
         updatedAt = now;
         if (status == null) {
             status = AdStatus.PENDING;
+        }
+        if (deleted == null) {
+            deleted = 0;
         }
     }
 

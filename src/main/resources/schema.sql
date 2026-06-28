@@ -1,12 +1,18 @@
-CREATE TABLE IF NOT EXISTS admin_users (
+DROP TABLE IF EXISTS dashboard_settings CASCADE;
+DROP TABLE IF EXISTS ad_requests CASCADE;
+DROP TABLE IF EXISTS admin_users CASCADE;
+
+CREATE TABLE admin_users (
     id UUID PRIMARY KEY,
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     role VARCHAR(50) NOT NULL,
-    CONSTRAINT admin_users_role_check CHECK (role IN ('ADMIN'))
+    deleted INTEGER NOT NULL DEFAULT 0,
+    CONSTRAINT admin_users_role_check CHECK (role IN ('ADMIN')),
+    CONSTRAINT admin_users_deleted_check CHECK (deleted IN (0, 1))
 );
 
-CREATE TABLE IF NOT EXISTS ad_requests (
+CREATE TABLE ad_requests (
     id UUID PRIMARY KEY,
     company_name VARCHAR(255) NOT NULL,
     contact_person VARCHAR(255) NOT NULL,
@@ -29,12 +35,16 @@ CREATE TABLE IF NOT EXISTS ad_requests (
     updated_at TIMESTAMP NOT NULL,
     approved_at TIMESTAMP,
     rejected_at TIMESTAMP,
-    CONSTRAINT ad_requests_status_check CHECK (status IN ('PENDING', 'APPROVED', 'REJECTED'))
+    deleted INTEGER NOT NULL DEFAULT 0,
+    CONSTRAINT ad_requests_status_check CHECK (status IN ('PENDING', 'APPROVED', 'REJECTED')),
+    CONSTRAINT ad_requests_deleted_check CHECK (deleted IN (0, 1))
 );
 
-CREATE TABLE IF NOT EXISTS dashboard_settings (
+CREATE TABLE dashboard_settings (
     setting_key VARCHAR(120) PRIMARY KEY,
     setting_value TEXT,
     description TEXT,
-    updated_at TIMESTAMP NOT NULL
+    updated_at TIMESTAMP NOT NULL,
+    deleted INTEGER NOT NULL DEFAULT 0,
+    CONSTRAINT dashboard_settings_deleted_check CHECK (deleted IN (0, 1))
 );
