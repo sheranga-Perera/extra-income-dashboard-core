@@ -49,6 +49,7 @@ public class AdController {
         adRequest.setMediaContent(trimOrNull(request.getMediaContent()));
         adRequest.setMediaNotes(trimOrNull(request.getMediaNotes()));
         adRequest.setCta(trimOrNull(request.getCta()));
+        adRequest.setCtaUrl(trimOrNull(request.getCtaUrl()));
         adRequest.setViewsPerDay(request.getViewsPerDay());
         adRequest.setMinutesPerDay(request.getMinutesPerDay());
         adRequest.setStartDate(parseDate(request.getStartDate(), "startDate"));
@@ -119,6 +120,22 @@ public class AdController {
         return ResponseEntity.ok(toResponse(saved));
     }
 
+    @PatchMapping("/requests/{id}/discontinue")
+    public ResponseEntity<AdRequestResponse> discontinueRequest(@PathVariable UUID id) {
+        requireAdmin();
+        AdRequest adRequest = adRequestRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ad request not found"));
+
+        if (adRequest.getStatus() != AdStatus.APPROVED) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only approved advertisements can be discontinued");
+        }
+
+        adRequest.setStatus(AdStatus.DISCONTINUED);
+        AdRequest saved = adRequestRepository.save(adRequest);
+        log.info("Ad request discontinued: requestId={}, adminUserId={}", saved.getId(), currentAdminService.getCurrentAdmin().getId());
+        return ResponseEntity.ok(toResponse(saved));
+    }
+
     @GetMapping("/active")
     public ResponseEntity<List<ActiveAdResponse>> getActiveAds() {
         LocalDate today = LocalDate.now();
@@ -136,6 +153,7 @@ public class AdController {
                 adRequestRepository.countByStatus(AdStatus.PENDING),
                 adRequestRepository.countByStatus(AdStatus.APPROVED),
                 adRequestRepository.countByStatus(AdStatus.REJECTED),
+                adRequestRepository.countByStatus(AdStatus.DISCONTINUED),
                 adRequestRepository.findActiveAds(AdStatus.APPROVED, today).size()
         ));
     }
@@ -193,6 +211,7 @@ public class AdController {
                 request.getMediaContent(),
                 request.getMediaNotes(),
                 request.getCta(),
+                request.getCtaUrl(),
                 request.getViewsPerDay(),
                 request.getMinutesPerDay(),
                 request.getStartDate(),
@@ -214,6 +233,7 @@ public class AdController {
                 request.getMediaUrl(),
                 request.getMediaContent(),
                 request.getCta(),
+                request.getCtaUrl(),
                 request.getViewsPerDay(),
                 request.getMinutesPerDay(),
                 request.getStartDate(),

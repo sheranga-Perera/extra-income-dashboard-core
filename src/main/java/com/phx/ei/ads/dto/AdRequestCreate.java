@@ -16,6 +16,7 @@ public class AdRequestCreate {
     private String mediaContent;
     private String mediaNotes;
     private String cta;
+    private String ctaUrl;
     private Integer viewsPerDay;
     private Integer minutesPerDay;
     private String startDate;

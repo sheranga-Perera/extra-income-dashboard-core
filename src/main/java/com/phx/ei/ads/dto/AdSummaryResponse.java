@@ -9,5 +9,6 @@ public class AdSummaryResponse {
     private long pending;
     private long approved;
     private long rejected;
+    private long discontinued;
     private long active;
 }

@@ -223,3 +223,20 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - sql: ALTER TABLE dashboard_settings ADD CONSTRAINT dashboard_settings_deleted_check CHECK (deleted IN (0, 1))
+
+  - changeSet:
+      id: dashboard-007-add-ad-requests-cta-url
+      author: phx
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          columnExists:
+            tableName: ad_requests
+            columnName: cta_url
+      changes:
+        - addColumn:
+            tableName: ad_requests
+            columns:
+              - column:
+                  name: cta_url
+                  type: TEXT
