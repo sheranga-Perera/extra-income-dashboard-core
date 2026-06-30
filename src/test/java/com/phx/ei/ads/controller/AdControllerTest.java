@@ -107,4 +107,29 @@ class AdControllerTest {
         assertEquals(AdStatus.APPROVED, response.getBody().getStatus());
         verify(adRequestRepository, never()).save(any());
     }
+
+    @Test
+    void discontinueRequest_ApprovedAd_SavesDiscontinuedStatus() {
+        when(currentAdminService.getCurrentAdmin())
+                .thenReturn(new AdminUser(UUID.randomUUID(), "admin", "pw", Role.ADMIN));
+
+        AdRequest adRequest = new AdRequest();
+        adRequest.setId(UUID.randomUUID());
+        adRequest.setCompanyName("Acme");
+        adRequest.setContactPerson("Alex");
+        adRequest.setContactEmail("alex@acme.com");
+        adRequest.setAdTitle("Title");
+        adRequest.setAdDescription("Desc");
+        adRequest.setAdType("Video");
+        adRequest.setStatus(AdStatus.APPROVED);
+
+        when(adRequestRepository.findById(adRequest.getId())).thenReturn(Optional.of(adRequest));
+        when(adRequestRepository.save(adRequest)).thenReturn(adRequest);
+
+        ResponseEntity<AdRequestResponse> response = adController.discontinueRequest(adRequest.getId());
+
+        assertNotNull(response.getBody());
+        assertEquals(AdStatus.DISCONTINUED, response.getBody().getStatus());
+        verify(adRequestRepository).save(adRequest);
+    }
 }

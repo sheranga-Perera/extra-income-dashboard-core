@@ -56,6 +56,9 @@ public class AdRequest {
 
     private String cta;
 
+    @Column(columnDefinition = "TEXT")
+    private String ctaUrl;
+
     private Integer viewsPerDay;
 
     private Integer minutesPerDay;

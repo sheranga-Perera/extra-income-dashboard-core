@@ -17,6 +17,7 @@ public class ActiveAdResponse {
     private String mediaUrl;
     private String mediaContent;
     private String cta;
+    private String ctaUrl;
     private Integer viewsPerDay;
     private Integer minutesPerDay;
     private LocalDate startDate;
